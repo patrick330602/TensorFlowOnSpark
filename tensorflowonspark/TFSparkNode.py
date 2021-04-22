@@ -31,7 +31,7 @@ from . import reservation
 from . import util
 
 logger = logging.getLogger(__name__)
-TF_VERSION = pkg_resources.get_distribution('tensorflow').version
+TF_VERSION = pkg_resources.get_distribution('tensorflow-cpu').version
 
 
 def _has_spark_resource_api():
