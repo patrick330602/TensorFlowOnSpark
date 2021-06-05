@@ -28,13 +28,25 @@ jobs:
     template: python/validate_codestyle
     requires: [~commit, ~pr]
 
-  validate_safetydb:
-    template: python/validate_safety
+  validate_dependencies:
+    template: python/validate_dependencies
     requires: [~commit, ~pr]
 
 #  validate_security:
 #    template: python/validate_security
 #    requires: [~commit, ~pr]
+
+  validate_documentation:
+    template: python/documentation
+    environment:
+      DOCUMENTATION_PUBLISH: False
+    requires: [~pr]
+    steps:
+      - update_version: |
+          echo 'using version from setup.cfg'
+      - publish_documentation: |
+          $BASE_PYTHON -m pip install sphinx_rtd_theme tensorflow
+          $BASE_PYTHON -m screwdrivercd.documentation
 
   publish_test_pypi:
     template: python/package_python
@@ -61,3 +73,6 @@ jobs:
     steps:
       - update_version: |
           echo 'using version from setup.cfg'
+      - publish_documentation: |
+          $BASE_PYTHON -m pip install sphinx_rtd_theme tensorflow
+          $BASE_PYTHON -m screwdrivercd.documentation
